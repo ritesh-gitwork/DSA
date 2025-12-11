@@ -1,25 +1,27 @@
 class Solution {
 public:
     int singleNonDuplicate(vector<int>& nums) {
-        int low = 0, high = nums.size() - 1;
+        int n = nums.size();
 
-        while (low < high) {
-            int mid = low + (high - low) / 2;
+        if(n==1) return nums[0];
+        if(nums[0]!=nums[1]) return nums[0];
+        if(nums[n-1]!=nums[n-2]) return nums[n-1];
 
-            // mid ko hamesha even banao
-            if (mid % 2 == 1) mid--;
+        int low = 1, high=n-1;
 
-            // Agar pair sahi bana hua hai (mid, mid+1 same)
-            if (nums[mid] == nums[mid + 1]) {
-                // single element right side me hoga
-                low = mid + 2;
-            } else {
-                // yahan pattern toot gaya, single left side ya mid pe
-                high = mid;
+        while(low<=high){
+            int mid = (low+high)/2;
+
+            if(nums[mid]!=nums[mid-1] && nums[mid]!=nums[mid+1]) return nums[mid];
+            // elimination
+            if(mid%2==1 && nums[mid]==nums[mid-1] or mid%2==0 && nums[mid]==nums[mid+1]){
+                low=mid+1;
+            }
+            else{
+                high = mid-1;
             }
         }
-
-        // low == high -> single element ka index
-        return nums[low];
+        return -1;
+        
     }
 };
